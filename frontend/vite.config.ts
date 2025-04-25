@@ -19,4 +19,11 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: 'dist',
+  },
+  base: '/',
+  preview: {
+    port: 3000,
+  },
 }));

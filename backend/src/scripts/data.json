@@ -1,0 +1,116 @@
+[
+  {
+    id: "javascript",
+    name: "JavaScript",
+    icon: "javascript",
+    progress: 65,
+    topics: [
+      {
+        id: "js-basics",
+        title: "JavaScript Basics",
+        description: "Learn the fundamental concepts of JavaScript programming",
+        completed: false,
+        questions: [
+          {
+            id: "q1",
+            text: "Which of the following is NOT a primitive data type in JavaScript?",
+            options: [
+              { id: "o1", text: "String" },
+              { id: "o2", text: "Boolean" },
+              { id: "o3", text: "Array" },
+              { id: "o4", text: "Number" }
+            ],
+            correctOptionId: "o3"
+          },
+          {
+            id: "q2",
+            text: "What will the following code output?",
+            code: "console.log(typeof null);",
+            options: [
+              { id: "o1", text: "null" },
+              { id: "o2", text: "object" },
+              { id: "o3", text: "undefined" },
+              { id: "o4", text: "string" }
+            ],
+            correctOptionId: "o2"
+          },
+          {
+            id: "q3",
+            text: "Which operator is used for strict equality comparison in JavaScript?",
+            options: [
+              { id: "o1", text: "==" },
+              { id: "o2", text: "===" },
+              { id: "o3", text: "=" },
+              { id: "o4", text: "!=" }
+            ],
+            correctOptionId: "o2"
+          }
+        ]
+      },
+      {
+        id: "js-functions",
+        title: "Functions & Scope",
+        description: "Master JavaScript functions and understand variable scope",
+        completed: true,
+        questions: [
+          {
+            id: "q1",
+            text: "What is a closure in JavaScript?",
+            options: [
+              { id: "o1", text: "A function that has access to variables in its outer scope" },
+              { id: "o2", text: "A way to close a browser window" },
+              { id: "o3", text: "A method to terminate a loop" },
+              { id: "o4", text: "A technique to hide HTML elements" }
+            ],
+            correctOptionId: "o1"
+          },
+          {
+            id: "q2",
+            text: "What's the output of this code?",
+            code: "const add = (a, b) => a + b;\nconsole.log(add(2, 3));",
+            options: [
+              { id: "o1", text: "5" },
+              { id: "o2", text: "23" },
+              { id: "o3", text: "undefined" },
+              { id: "o4", text: "Error" }
+            ],
+            correctOptionId: "o1"
+          }
+        ]
+      },
+      {
+        id: "js-objects",
+        title: "Objects & Classes",
+        description: "Work with JavaScript objects and learn OOP principles",
+        completed: false,
+        questions: [
+          {
+            id: "q1",
+            text: "Which keyword is used to create a new object in JavaScript?",
+            options: [
+              { id: "o1", text: "create" },
+              { id: "o2", text: "object" },
+              { id: "o3", text: "new" },
+              { id: "o4", text: "instance" }
+            ],
+            correctOptionId: "o3"
+          },
+          {
+            id: "q2",
+            text: "What does the following code create?",
+            code: "class Person {\n  constructor(name) {\n    this.name = name;\n  }\n}",
+            options: [
+              { id: "o1", text: "A function" },
+              { id: "o2", text: "A class definition" },
+              { id: "o3", text: "An object instance" },
+              { id: "o4", text: "A Person variable" }
+            ],
+            correctOptionId: "o2"
+          },
+          {
+            id: "q3",
+            text: "Which of the following correctly creates an object in JavaScript?",
+            options: [
+              { id: "o1", text: "const obj = Object.create();" },
+              { id: "o2", text: "const obj = {name: 'John', age: 30};" },
+              { id: "o3", text: "const obj = [name: 'John', age: 30]

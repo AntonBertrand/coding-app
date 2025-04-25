@@ -8,7 +8,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:8080", // Your frontend URL
+    origin: process.env.FRONTEND_URL || "http://localhost:8080",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -16,13 +16,59 @@ app.use(
 app.use(express.json());
 
 // MongoDB Connection
-mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/coding-app", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+let cachedDb = null;
+
+const connectDB = async () => {
+  if (cachedDb) {
+    console.log("Using cached database connection");
+    return cachedDb;
+  }
+
+  try {
+    console.log("Attempting to connect to MongoDB...");
+    console.log(
+      "MongoDB URI:",
+      process.env.MONGODB_URI ? "Present" : "Missing"
+    );
+
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      maxPoolSize: 10,
+    });
+
+    cachedDb = conn;
+    console.log("Connected to MongoDB successfully");
+    return conn;
+  } catch (err) {
+    console.error("MongoDB connection error details:", {
+      name: err.name,
+      message: err.message,
+      code: err.code,
+      stack: err.stack,
+    });
+    throw err;
+  }
+};
+
+// Middleware to ensure database connection
+app.use(async (req, res, next) => {
+  try {
+    if (!mongoose.connection.readyState) {
+      console.log("Database not connected, attempting to connect...");
+      await connectDB();
+    }
+    next();
+  } catch (err) {
+    console.error("Database connection middleware error:", err);
+    res.status(500).json({
+      message: "Database connection failed",
+      error: process.env.NODE_ENV === "development" ? err.message : undefined,
+    });
+  }
+});
 
 // Routes
 app.use("/api/languages", require("./routes/languages"));
@@ -32,14 +78,16 @@ app.use("/api/progress", require("./routes/progress"));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error("Global error handler:", {
+    message: err.message,
+    stack: err.stack,
+    name: err.name,
+  });
   res.status(500).json({
     message: "Something went wrong!",
     error: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Export the Express app as a serverless function
+module.exports = app;

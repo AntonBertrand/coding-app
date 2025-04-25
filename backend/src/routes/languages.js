@@ -3,15 +3,24 @@ const router = express.Router();
 const Language = require("../models/Language");
 const Topic = require("../models/Topic");
 const UserProgress = require("../models/UserProgress");
+const mongoose = require("mongoose");
 
 // Get all languages
 router.get("/", async (req, res) => {
   try {
-    const languages = await Language.find().populate("topics");
+    console.log("Attempting to fetch languages...");
+    const languages = await Language.find().populate("topics").maxTimeMS(10000);
+    console.log(`Found ${languages.length} languages`);
+
     const userId = req.query.userId;
+    console.log("User ID from query:", userId);
 
     if (userId) {
-      const userProgress = await UserProgress.findOne({ userId });
+      console.log("Attempting to fetch user progress...");
+      const userProgress = await UserProgress.findOne({ userId }).maxTimeMS(
+        10000
+      );
+      console.log("User progress found:", !!userProgress);
 
       if (userProgress) {
         // Map through languages and add progress for each
@@ -65,7 +74,24 @@ router.get("/", async (req, res) => {
     const plainLanguages = languages.map((lang) => lang.toObject());
     res.json(plainLanguages);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Detailed error in languages route:", {
+      name: err.name,
+      message: err.message,
+      stack: err.stack,
+      code: err.code,
+    });
+
+    res.status(500).json({
+      message: "Error fetching languages",
+      error:
+        process.env.NODE_ENV === "development"
+          ? {
+              message: err.message,
+              name: err.name,
+              code: err.code,
+            }
+          : undefined,
+    });
   }
 });
 

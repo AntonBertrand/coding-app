@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "migrate": "node src/scripts/migrateData.js"
+    "migrate": "node src/scripts/migrateData.js",
+    "vercel-build": "echo 'No build step required'"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -15,6 +16,10 @@
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "@vercel/node": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=14.x"
   }
 }

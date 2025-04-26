@@ -5,6 +5,8 @@ const cors = require("cors");
 
 const app = express();
 
+console.log("FRONTEND_URL is:", process.env.FRONTEND_URL);
+
 // Middleware
 app.use(
   cors({

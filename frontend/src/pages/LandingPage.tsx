@@ -67,7 +67,11 @@ const LandingPage: React.FC = () => {
               asChild
               className="bg-quiz-primary hover:bg-quiz-secondary text-white px-8 py-6 text-lg rounded-xl"
             >
-              <Link to="/dashboard">Get Started</Link>
+              {currentUser ? (
+                <Link to="/dashboard">Get Started</Link>
+              ) : (
+                <Link to="/signup">Get Started</Link>
+              )}
             </Button>
           </div>
           <div className="md:w-1/2">
